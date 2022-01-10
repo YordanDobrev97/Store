@@ -19,7 +19,7 @@ namespace Store.Client
 
             Order order = new Order()
             {
-                DatePurchase = new DateTime(2021, 06, 14)
+                DatePurchase = new DateTime(2021, 06, 14, 12, 34, 56)
             };
 
             // weekend order
