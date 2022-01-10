@@ -12,7 +12,7 @@ namespace Store.Data
 
         public ICollection<CartProduct> Products { get; set; }
 
-        public void AddToCart(Product product, double quantity)
+        public void AddToCart(Product product, IDiscountStrategy discountStrategy)
         {
             var existProduct = this.Products.FirstOrDefault(p => p.Product.Name == product.Name);
 
@@ -21,12 +21,13 @@ namespace Store.Data
                 this.Products.Add(new CartProduct()
                 {
                     Product = product,
-                    Quantity = quantity,
+                    Quantity = 1,
+                    DiscountStrategy = discountStrategy,
                 });
             }
             else
             {
-                existProduct.Quantity = quantity;
+                existProduct.Quantity++;
             }
         }
     }

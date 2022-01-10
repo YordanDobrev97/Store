@@ -12,37 +12,17 @@ namespace Store.Client.Seeding
         {
             this.products = new List<Product>()
             {
-                new Food()
-                    {
-                        Name = "apples",
-                        Brand = "BrandA",
-                        Price = 1.50M,
-                        ExpiryDate = new DateTime(2021, 06, 14)
-                    },
-                new Beverage()
-                    {
-                        Name = "milk",
-                        Brand = "BrandM",
-                        Price = 0.99M,
-                        ExpiryDate = new DateTime(2022, 02, 02),
-                    },
-                new Clothes()
-                    {
-                        Name = "T-shirt",
-                        Brand = "BrandT",
-                        Price = 15.99M,
-                        Size = SizeClothes.M,
-                        Color = "violet",
-                    },
-                new Appliance()
-                    {
-                        Name = "laptop",
-                        Brand = "BrandL",
-                        Price = 2345M,
-                        Model = "ModelL",
-                        ProductionDate = new DateTime(2021, 03, 03),
-                        Weight = 1.125,
-                    }
+                new Food("apples", "BrandA", 1.50M, new DateTime(2021, 06, 14), new ExpiryProductStrategy(new DateTime(2021, 06, 14))),
+                new Food("apples", "BrandA", 1.50M, new DateTime(2021, 06, 14), new ExpiryProductStrategy(new DateTime(2021, 06, 14))),
+               
+                new Beverage("milk", "BrandM", 0.99M, new DateTime(2022, 02, 02), new ExpiryProductStrategy(new DateTime(2022, 02, 02))),
+                
+                new Clothes("T-shirt", "BrandT", 15.99M, SizeClothes.M, "violet", new ClothesDiscountStrategy()),
+                new Clothes("T-shirt", "BrandT", 15.99M, SizeClothes.M, "violet", new ClothesDiscountStrategy()),
+
+                new Appliance("laptop", "BrandL", 2345M, "ModelL", new DateTime(2021, 03, 03), 1.125,  new ApplianceDiscountStrategy()),
+               // new Appliance("laptop 2", "BrandN", 5345M, "ModelX", new DateTime(2021, 01, 08), 1.125,  new ApplianceDiscountStrategy())
+
             };
         }
 
@@ -55,7 +35,7 @@ namespace Store.Client.Seeding
         {
             foreach (var product in products)
             {
-                cart.AddToCart(product, 1);
+                cart.AddToCart(product, product.DiscountStrategy);
             }
         }
     }

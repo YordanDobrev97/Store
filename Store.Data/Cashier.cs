@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Store.Data
 {
@@ -13,20 +14,24 @@ namespace Store.Data
             foreach (var productCart in cart.Products)
             {
                 Console.WriteLine(productCart);
-                decimal totalPrice = productCart.Product.Price * (decimal)productCart.Quantity;
-                var result = Discount.GetDiscount(productCart.Product, purchase, totalPrice);
-                decimal discount = result.Item1;
-                decimal discountSum = result.Item2;
+                var discount = this.CalculateDiscount(productCart.DiscountStrategy, productCart, purchase);
 
                 if (discount > 0)
                 {
-                    Console.WriteLine($"#discount {discount}% - ${discountSum:F2}");
-                }   
+                    Console.WriteLine($"#discount <discount %> {discount:f2} ");
+                }
+                Console.WriteLine();
             }
 
+            var totalPrice = cart.Products.Sum(x => x.Product.Price);
+            Console.WriteLine($"SUBTOTAL: ${totalPrice:F2}");
+
             Console.WriteLine("-----------------------------------------------------------------------------------");
+        }
 
-
+        private decimal CalculateDiscount(IDiscountStrategy discountStrategy, CartProduct cartProduct, Order order)
+        {
+            return discountStrategy.CalculteDiscount(cartProduct, order);
         }
     }
 }

@@ -8,19 +8,21 @@ namespace Store.Data
 
         public double Quantity { get; set; }
 
-        private decimal CalculateTotalPrice()
-        {
-            return this.Product.Price * (decimal)this.Quantity;
-        }
+        public IDiscountStrategy DiscountStrategy { get; set; }
 
         public override string ToString()
         {
             StringBuilder output = new StringBuilder();
 
             output.AppendLine(this.Product.ToString());
-            output.AppendLine($"{this.Quantity} x {this.Product.Price} = {this.CalculateTotalPrice():F2}");
+            output.Append($"{this.Quantity} x {this.Product.Price} = {this.CalculateTotalPrice():F2}");
 
             return output.ToString();
+        }
+
+        private decimal CalculateTotalPrice()
+        {
+            return this.Product.Price * (decimal)this.Quantity;
         }
     }
 }
